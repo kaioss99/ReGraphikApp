@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
-namespace ReGraphik.Models
+namespace ApiRestReGraphik.Models
 {
-    internal class Sugestao
+    public class Sugestao
     {
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
+
+        [JsonPropertyName("tipo_residuo_aceito")]
+        public required string TipoResiduoAceito { get; set; }
+
+        [JsonPropertyName("descricao_sugestao")]
+        public required string DescricaoSugestao { get; set; }
     }
 }

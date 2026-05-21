@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ReGraphik.Models
+namespace ReGraphik.ViewModels
 {
-    internal class TipoResiduo
+    internal class ResiduoViewModel
     {
     }
 }

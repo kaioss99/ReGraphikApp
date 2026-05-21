@@ -1,12 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
-namespace ReGraphik.Models
+namespace ApiRestReGraphik.Models
 {
-    internal class PontosColeta
+    public class PontosColeta
     {
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
+        [JsonPropertyName("nome_ponto")]
+        public required string NomePonto { get; set; }
+
+        [JsonPropertyName("cidade")]
+        public required string Cidade { get; set; }
+
+        [JsonPropertyName("estado")]
+        public required string Estado { get; set; }
+
+        [JsonPropertyName("cep")]
+        public required string CEP { get; set; }
+
+        [JsonPropertyName("residuos_aceitos")]
+        public required string ResiduosAceitos { get; set; }
     }
 }
