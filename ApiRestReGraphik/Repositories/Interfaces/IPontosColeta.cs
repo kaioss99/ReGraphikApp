@@ -6,7 +6,7 @@ namespace ApiRestReGraphik.Repositories.Interface
     /// Define os métodos para acessar e manipular os dados relacionados aos pontos de coleta, 
     /// como listar, obter por ID, adicionar, atualizar e excluir pontos de coleta.
     /// </summary>
-    public interface IPontoColeta
+    public interface IPontosColeta
     {
         Task<List<PontosColeta>> GetAll();
         Task<PontosColeta> GetById(string id);
