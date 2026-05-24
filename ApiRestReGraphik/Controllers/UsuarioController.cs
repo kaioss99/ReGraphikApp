@@ -108,7 +108,7 @@ namespace ApiRestReGraphik.Controllers
         }
 
         /// <summary>
-        ///  Post api/Usuario - Criar um novo usuário no ReGraphik.
+        /// POST api/Usuario - Criar um novo usuário no ReGraphik.
         /// </summary>
         /// 
         /// <remarks>Responsável por criar um novo usuário no ReGraphik.
@@ -157,7 +157,7 @@ namespace ApiRestReGraphik.Controllers
         }
 
         /// <summary>
-        /// DELETE api/Usuario/{id} - Atualizar um usuário existente no ReGraphik com base no ID fornecido.
+        /// PUT api/Usuario/{id} - Atualizar um usuário existente no ReGraphik com base no ID fornecido.
         /// </summary>
         /// 
         /// <remarks>Responsável por atualizar um usuário existente no ReGraphik com base no ID fornecido.

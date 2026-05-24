@@ -108,7 +108,7 @@ namespace ApiRestReGraphik.Controllers
         }
 
         /// <summary>
-        ///  Post api/PontosColeta - Criar um novo ponto de coleta no ReGraphik.
+        /// POST api/PontosColeta - Criar um novo ponto de coleta no ReGraphik.
         /// </summary>
         /// 
         /// <remarks>Responsável por criar um novo ponto de coleta no ReGraphik.
@@ -156,7 +156,7 @@ namespace ApiRestReGraphik.Controllers
         }
 
         /// <summary>
-        /// DELETE api/PontosColeta/{id} - Atualizar um ponto de coleta existente no ReGraphik com base no ID fornecido.
+        /// PUT api/PontosColeta/{id} - Atualizar um ponto de coleta existente no ReGraphik com base no ID fornecido.
         /// </summary>
         /// 
         /// <remarks>Responsável por atualizar um ponto de coleta existente no ReGraphik com base no ID fornecido.

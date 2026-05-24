@@ -116,7 +116,7 @@ namespace ApiRestReGraphik.Controllers
         }
 
         /// <summary>
-        ///  Post api/Residuo - Criar um novo resíduo no ReGraphik.
+        /// POST api/Residuo - Criar um novo resíduo no ReGraphik.
         /// </summary>
         /// 
         /// <remarks>Responsável por criar um novo resíduo no ReGraphik.
@@ -172,7 +172,7 @@ namespace ApiRestReGraphik.Controllers
         }
 
         /// <summary>
-        /// DELETE api/Residuo/{id} - Atualizar um resíduo existente no ReGraphik com base no ID fornecido.
+        /// PUT api/Residuo/{id} - Atualizar um resíduo existente no ReGraphik com base no ID fornecido.
         /// </summary>
         /// 
         /// <remarks>Responsável por atualizar um resíduo existente no ReGraphik com base no ID fornecido.
