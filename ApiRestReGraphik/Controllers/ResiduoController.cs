@@ -24,7 +24,7 @@ namespace ApiRestReGraphik.Controllers
 
 
         /// <summary>
-        ///  GET api/Residuo - Endpoint para obter dados do Residuo. Retorna um status 200 OK com os dados ou um status 500 Internal Server Error em caso de falha.
+        ///  GET api/Residuo - Obtém dados do Residuo e retorna uma lista de resíduos cadastrados no ReGraphik.
         /// </summary>
         /// 
         /// <remarks>Responsável por listar os dados do Residuo. Retornando uma coleção de objetos detalhando informações técnicas e operacionais de cada resíduo, 
@@ -57,7 +57,7 @@ namespace ApiRestReGraphik.Controllers
         }
 
         /// <summary>
-        /// GET api/ReGraphik/{id} - Endpoint para obter um resíduo específico do ReGraphik com base no ID fornecido.
+        /// GET api/Residuo/{id} - Obtém um resíduo específico do ReGraphik com base no ID fornecido.
         /// </summary>
         /// 
         /// <remarks>Responsável por obter um resíduo específico do ReGraphik com base no ID fornecido. 

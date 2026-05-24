@@ -6,6 +6,7 @@ namespace ApiRestReGraphik.Models
     {
         [JsonPropertyName("id")]
         public required string Id { get; set; }
+
         [JsonPropertyName("nome_ponto")]
         public required string NomePonto { get; set; }
 

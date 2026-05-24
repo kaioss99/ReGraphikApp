@@ -24,7 +24,7 @@ namespace ApiRestReGraphik.Controllers
 
 
         /// <summary>
-        ///  GET api/Usuario - Endpoint para obter dados do Usuario. Retorna um status 200 OK com os dados ou um status 500 Internal Server Error em caso de falha.
+        ///  GET api/Usuario - Obtém dados do Usuario e retorna uma lista de usuários cadastrados no ReGraphik.
         /// </summary>
         /// 
         /// <remarks>Responsável por listar os dados do Usuario. Retornando uma coleção de objetos detalhando informações técnicas e operacionais de cada usuário, 
@@ -57,7 +57,7 @@ namespace ApiRestReGraphik.Controllers
         }
 
         /// <summary>
-        /// GET api/Usuario/{id} - Endpoint para obter um usuário específico do Usuario com base no ID fornecido.
+        /// GET api/Usuario/{id} - Obtém um usuário específico do Usuario com base no ID fornecido.
         /// </summary>
         /// 
         /// <remarks>Responsável por obter um usuário específico do ReGraphik com base no ID fornecido. 
