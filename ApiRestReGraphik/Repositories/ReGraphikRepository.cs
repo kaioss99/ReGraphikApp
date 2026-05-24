@@ -15,10 +15,18 @@ namespace ApiRestReGraphik.Repositories
 
         private readonly ILogger<ReGraphikRepository> _logger;
 
-        public ReGraphikRepository(ILogger<ReGraphikRepository> logger)
+        public ReGraphikRepository(ILogger<ReGraphikRepository> logger, IConfiguration configuration)
         {
+            var baseUrl = configuration["Firebase:RealtimeDatabaseUrl"];
+
+            if (string.IsNullOrEmpty(baseUrl))
+            {
+                throw new ArgumentNullException(nameof(baseUrl), "A URL do Firebase não foi encontrada no appsettings.json. Verifique a chave 'Firebase:RealtimeDatabaseUrl'.");
+            }
+
+            _firebaseClient = new FirebaseClient(baseUrl);
             _logger = logger;
-            _firebaseClient = new FirebaseClient("Firebase:RealtimeDatabaseUrl");
+            
         }
 
         /// <summary>

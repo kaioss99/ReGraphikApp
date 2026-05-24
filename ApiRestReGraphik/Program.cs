@@ -1,3 +1,7 @@
+using ApiRestReGraphik.Repositories;
+using ApiRestReGraphik.Repositories.Interface;
+using ApiRestReGraphik.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,6 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+// Registra o repositório e o serviço do ReGraphik para que possam ser injetados em outros componentes da aplicação, como os controladores.
+builder.Services.AddScoped<IReGraphikRepository, ReGraphikRepository>();
+builder.Services.AddScoped<ReGraphikService>();
 
 // Configura o Swagger para incluir comentários XML, permitindo que as descrições dos endpoints sejam exibidas na documentação gerada.
 builder.Services.AddSwaggerGen(options =>
@@ -17,18 +25,13 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    // Deixe o Swagger rodar tanto local quanto publicado
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        // Isso faz com que o Swagger seja a página inicial do seu site publicado
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "API ReGraphik v1");
-        c.RoutePrefix = string.Empty;
-    });
-}
+    // Isso faz com que o Swagger seja a página inicial do seu site publicado
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API ReGraphik v1");
+    c.RoutePrefix = string.Empty;
+});
 
 
 app.UseHttpsRedirection();
