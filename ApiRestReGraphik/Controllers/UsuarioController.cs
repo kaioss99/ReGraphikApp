@@ -229,7 +229,7 @@ namespace ApiRestReGraphik.Controllers
                 var existing = await _usuarioService.ObterPorId(id);
                 if (existing == null)
                 {
-                    return NotFound();
+                    return NotFound($"Usuário com ID {id} não encontrado.");
                 }
 
                 await _usuarioService.Excluir(id);

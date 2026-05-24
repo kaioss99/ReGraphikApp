@@ -244,7 +244,7 @@ namespace ApiRestReGraphik.Controllers
                 var existing = await _residuoService.ObterPorId(id);
                 if (existing == null)
                 {
-                    return NotFound();
+                    return NotFound($"Resíduo com ID {id} não encontrado.");
                 }
 
                 await _residuoService.Excluir(id);

@@ -228,7 +228,7 @@ namespace ApiRestReGraphik.Controllers
                 var existing = await _pontosColetaService.ObterPorId(id);
                 if (existing == null)
                 {
-                    return NotFound();
+                    return NotFound($"Ponto de coleta com ID {id} não encontrado.");
                 }
 
                 await _pontosColetaService.Excluir(id);

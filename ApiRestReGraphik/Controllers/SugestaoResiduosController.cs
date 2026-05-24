@@ -6,17 +6,17 @@ namespace ApiRestReGraphik.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class SugestaoController : ControllerBase
+    public class SugestaoResiduosController : ControllerBase
     {
-        private readonly SugestaoService _sugestaoService;
-        private readonly ILogger<SugestaoController> _logger;
+        private readonly SugestaoResiduosService _sugestaoService;
+        private readonly ILogger<SugestaoResiduosController> _logger;
 
         /// <summary>
-        /// Construtor da classe SugestaoController, que recebe um logger e um serviço de Sugestao para ser utilizado nas ações do controlador.
+        /// Construtor da classe SugestaoResiduosController, que recebe um logger e um serviço de Sugestao de residuos para ser utilizado nas ações do controlador.
         /// </summary>
         /// <param name="logger">Logger para registrar informações e erros.</param>
-        /// <param name="sugestaoService">Serviço de Sugestao para operações relacionadas.</param>
-        public SugestaoController(ILogger<SugestaoController> logger, SugestaoService sugestaoService)
+        /// <param name="sugestaoService">Serviço de Sugestao de residuos para operações relacionadas.</param>
+        public SugestaoResiduosController(ILogger<SugestaoResiduosController> logger, SugestaoResiduosService sugestaoService)
         {
             _logger = logger;
             _sugestaoService = sugestaoService;
@@ -24,11 +24,11 @@ namespace ApiRestReGraphik.Controllers
 
 
         /// <summary>
-        ///  GET api/Sugestao - Obtém dados do Sugestao e retorna uma lista de sugestões cadastradas no ReGraphik.
+        ///  GET api/SugestaoResiduos - Obtém dados do Sugestao de residuos e retorna uma lista de sugestões cadastradas no ReGraphik.
         /// </summary>
         /// 
         /// <remarks>Responsável por listar os dados do Sugestao. Retornando uma coleção de objetos detalhando informações técnicas e operacionais de cada sugestão, 
-        /// com atributos como ID, tipo de residuo aceito e descrição da sugestão.
+        /// com atributos como ID, id de cadastro do residuo, id de sugestão e data de aplicação da sugestão.
         /// 
         /// Observação: Retorna um status 200 OK com os dados do ReGraphik ou um status 500 Internal Server Error em caso de falha.
         /// </remarks>
@@ -49,7 +49,7 @@ namespace ApiRestReGraphik.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Erro ao obter dados do Sugestao. Erro:{ex.Message}");
+                _logger.LogError($"Erro ao obter dados do Sugestao de residuos. Erro:{ex.Message}");
                 throw new Exception("Ocorreu um erro ao processar a solicitação.");
             }
 
@@ -57,17 +57,18 @@ namespace ApiRestReGraphik.Controllers
         }
 
         /// <summary>
-        /// GET api/Sugestao/{id} - Obtém uma sugestão específica do ReGraphik com base no ID fornecido.
+        /// GET api/SugestaoResiduos/{id} - Obtém uma sugestão de resíduos específica do ReGraphik com base no ID fornecido.
         /// </summary>
         /// 
-        /// <remarks>Responsável por obter uma sugestão específica do ReGraphik com base no ID fornecido. 
+        /// <remarks>Responsável por obter uma sugestão de resíduos específica do ReGraphik com base no ID fornecido. 
         /// 
         /// Exemplo de resposta: 
         /// 
         /// {
         ///     "Id": -NxYZ123456789,
-        ///     "TipoResiduoAceito": "Papel",
-        ///     "DescricaoSugestao": "Aceitamos papel reciclável, como papel A4 usado, jornais e revistas. Por favor, certifique-se de que o papel esteja limpo e seco antes de descartá-lo conosco."
+        ///     "IdCadastroResiduo": "123456789",
+        ///     "IdSugestao": "987654321",
+        ///     "DataAplicacao": "2024-06-01T12:00:00Z"
         /// }
         /// 
         /// Observação: Retorna um status 200 OK com os dados da sugestão, um status 404 Not Found se a sugestão não for encontrada ou 
@@ -93,26 +94,27 @@ namespace ApiRestReGraphik.Controllers
                 var result = await _sugestaoService.ObterPorId(id);
                 if (result == null)
                 {
-                    return NotFound($"Sugestão com ID {id} não encontrada.");
+                    return NotFound($"Sugestão de resíduos com ID {id} não encontrada.");
                 }
                 return Ok(result);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Erro ao obter dados da Sugestão com ID {id}. Erro:{ex.Message}");
+                _logger.LogError($"Erro ao obter dados da Sugestão de resíduos com ID {id}. Erro:{ex.Message}");
                 throw new Exception("Ocorreu um erro ao processar a solicitação.");
             }
         }
 
         /// <summary>
-        /// POSTapi/Sugestao - Criar uma nova sugestão no ReGraphik.
+        /// POST api/SugestaoResiduos - Criar uma nova sugestão de resíduos no ReGraphik.
         /// </summary>
         /// 
-        /// <remarks>Responsável por criar uma nova sugestão no ReGraphik.
+        /// <remarks>Responsável por criar uma nova sugestão de resíduos no ReGraphik.
         /// 
         /// Requisitos de validação:
-        /// - TipoResiduoAceito: Deve ser uma string não vazia que descreva o tipo de resíduo aceito pela sugestão.
-        /// - DescricaoSugestao: Deve ser uma string não vazia que forneça detalhes sobre a sugestão, incluindo informações sobre o tipo de resíduo aceito,
+        /// - IdCadastroResiduo: Deve ser um ID válido de um resíduo cadastrado no ReGraphik.
+        /// - IdSugestao: Deve ser um ID único para a sugestão, não pode ser duplicado.
+        /// - DataAplicacao: Deve ser uma data válida, não pode ser uma data futura.
         /// 
         /// Observação: Retorna um status 201 Created com os dados da sugestão criada, um status 400 Bad Request se a requisição for inválida ou
         /// um status 500 Internal Server Error em caso de falha.
@@ -129,13 +131,13 @@ namespace ApiRestReGraphik.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Post([FromBody] Sugestao sugestao)
+        public async Task<IActionResult> Post([FromBody] SugestaoResiduo sugestao)
         {
             try
             {
                 if (sugestao == null)
                 {
-                    return BadRequest("Sugestão inválida.");
+                    return BadRequest("Sugestão de resíduos inválida.");
                 }
 
                 await _sugestaoService.Criar(sugestao);
@@ -144,18 +146,18 @@ namespace ApiRestReGraphik.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Erro ao criar dados da Sugestão. Erro:{ex.Message}");
+                _logger.LogError($"Erro ao criar dados da Sugestão de resíduos. Erro:{ex.Message}");
                 throw new Exception("Ocorreu um erro ao processar a solicitação.");
             }
         }
 
         /// <summary>
-        /// PUT api/Sugestao/{id} - Atualizar uma sugestão existente no ReGraphik com base no ID fornecido.
+        /// PUT api/SugestaoResiduos/{id} - Atualizar uma sugestão de resíduos existente no ReGraphik com base no ID fornecido.
         /// </summary>
         /// 
-        /// <remarks>Responsável por atualizar uma sugestão existente no ReGraphik com base no ID fornecido.
-        /// Observação: Retorna um status 200 OK com os dados da sugestão atualizada, um status 400 Bad Request se a requisição for inválida,
-        /// um status 404 Not Found se a sugestão não for encontrada ou um status 500 Internal Server Error em caso de falha.</remarks>
+        /// <remarks>Responsável por atualizar uma sugestão de resíduos existente no ReGraphik com base no ID fornecido.
+        /// Observação: Retorna um status 200 OK com os dados da sugestão de resíduos atualizada, um status 400 Bad Request se a requisição for inválida,
+        /// um status 404 Not Found se a sugestão de resíduos não for encontrada ou um status 500 Internal Server Error em caso de falha.</remarks>
         /// 
         /// <param name="id"></param>
         /// <param name="sugestao"></param>
@@ -171,7 +173,7 @@ namespace ApiRestReGraphik.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Put(string id, [FromBody] Sugestao sugestao)
+        public async Task<IActionResult> Put(string id, [FromBody] SugestaoResiduo sugestao)
         {
             try
             {
@@ -183,25 +185,25 @@ namespace ApiRestReGraphik.Controllers
                 var existing = await _sugestaoService.ObterPorId(id);
                 if (existing == null)
                 {
-                    return NotFound($"Sugestão com ID {id} não encontrada.");
+                    return NotFound($"Sugestão de resíduos com ID {id} não encontrada.");
                 }
 
                 await _sugestaoService.Atualizar(id, sugestao);
-                return Ok($"Sugestão com ID {id} atualizada com sucesso.");
+                return Ok($"Sugestão de resíduos com ID {id} atualizada com sucesso.");
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Erro ao atualizar dados da Sugestão com ID {id}. Erro:{ex.Message}");
+                _logger.LogError($"Erro ao atualizar dados da Sugestão de resíduos com ID {id}. Erro:{ex.Message}");
                 throw new Exception("Ocorreu um erro ao processar a solicitação.");
             }
         }
 
         /// <summary>
-        /// DELETE api/Sugestao/{id} - Excluir uma sugestão do ReGraphik com base no ID fornecido. 
+        /// DELETE api/SugestaoResiduos/{id} - Excluir uma sugestão de resíduos do ReGraphik com base no ID fornecido. 
         /// </summary>
         /// 
-        /// <remarks>Responsável por excluir uma sugestão do ReGraphik com base no ID fornecido. 
-        /// Observação: Retorna um status 200 OK se a exclusão for bem-sucedida, um status 404 Not Found se a sugestão não for 
+        /// <remarks>Responsável por excluir uma sugestão de resíduos do ReGraphik com base no ID fornecido. 
+        /// Observação: Retorna um status 200 OK se a exclusão for bem-sucedida, um status 404 Not Found se a sugestão de resíduos não for 
         /// encontrada ou um status 500 Internal Server Error em caso de falha.</remarks>
         /// 
         /// <param name="id">ID do resíduo a ser excluído.</param>
@@ -222,15 +224,15 @@ namespace ApiRestReGraphik.Controllers
                 var existing = await _sugestaoService.ObterPorId(id);
                 if (existing == null)
                 {
-                    return NotFound($"Sugestão com ID {id} não encontrada.");
+                    return NotFound($"Sugestão de resíduos com ID {id} não encontrada.");
                 }
 
                 await _sugestaoService.Excluir(id);
-                return Ok($"Sugestão com ID {id} excluída com sucesso.");
+                return Ok($"Sugestão de resíduos com ID {id} excluída com sucesso.");
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Erro ao excluir dados da Sugestão com ID {id}. Erro:{ex.Message}");
+                _logger.LogError($"Erro ao excluir dados da Sugestão de resíduos com ID {id}. Erro:{ex.Message}");
                 throw new Exception("Ocorreu um erro ao processar a solicitação.");
             }
         }
