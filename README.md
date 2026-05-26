@@ -89,7 +89,82 @@ Cliente WPF  →  API REST (ASP.NET Core)  →  Firebase Realtime Database
                         ↓
                Google Maps Places API  (busca de pontos de coleta)
 ```
+ ## Como o Mapa funciona — do clique ao pin
  
+---
+ 
+### 1. Usuário clica em "Buscar" (View — XAML)
+ 
+```xml
+<Button Content="Buscar"
+        Click="BtnBuscar_Click"/>
+ 
+<TextBox x:Name="TxtCidade"
+         Text="São Paulo"/>
+```
+ 
+---
+ 
+### 2. WPF manda pedido pra API (MapaPage.xaml.cs)
+ 
+```csharp
+private async void BtnBuscar_Click(object sender, RoutedEventArgs e)
+{
+    var cidade = TxtCidade.Text.Trim();
+ 
+    var urlApi = $"https://webregraphik.runasp.net/api/PontosColeta/google" +
+                 $"?cidade={Uri.EscapeDataString(cidade)}";
+ 
+    var resposta = await _http.GetAsync(urlApi);
+}
+```
+ 
+---
+ 
+### 3. API pergunta pro Google Maps (PontosColetaController.cs)
+ 
+```csharp
+var query = $"ponto de coleta reciclagem {cidade}";
+var url   = $"https://maps.googleapis.com/maps/api/place/textsearch/json" +
+            $"?query={Uri.EscapeDataString(query)}&key={apiKey}";
+ 
+var json = await _httpClient.GetStringAsync(url);
+```
+ 
+---
+ 
+### 4. Google Maps responde — API salva no Firebase (PontosColetaService.cs)
+ 
+```csharp
+var resultado = await _firebaseClient
+    .Child("pontos_coleta")
+    .PostAsync(novoPonto);
+ 
+novoPonto.Id = resultado.Key; // ID gerado pelo Firebase
+```
+ 
+---
+ 
+### 5. API devolve a lista pro WPF (PontosColetaController.cs)
+ 
+```csharp
+return Ok(listaGoogle); // JSON com lat/lng de cada ponto
+```
+ 
+---
+ 
+### 6. Usuário vê os pontos no mapa (MapaPage.xaml.cs)
+ 
+```csharp
+private void CarregarMapa(List<PontosColeta> pontos)
+{
+    var html    = GerarHtml(pontos);     // monta HTML com Leaflet.js
+    var tmpFile = Path.Combine(Path.GetTempPath(), "regraphik_mapa.html");
+ 
+    File.WriteAllText(tmpFile, html, Encoding.UTF8);
+    MapaBrowser.Navigate(new Uri(tmpFile)); // abre no WebBrowser do WPF
+}
+```
 --- 
 
 ## Tecnologias
