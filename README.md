@@ -427,7 +427,7 @@ A janela principal (`MainWindow`) possui uma barra lateral de navegação com 5 
 | Seção | Status | Descrição |
 |---|---|---|
 | Dashboard | Em desenvolvimento | Painel com visão geral do sistema |
-| Cadastrar Resíduos | Em desenvolvimento | Formulário de cadastro de resíduos |
+| Cadastrar Resíduos | Funcional | Formulário de cadastro de resíduos |
 | Mapa/Ponto de Coleta | Funcional | Mapa interativo com busca por cidade |
 | Relatórios | Em desenvolvimento | Geração de relatórios |
 
